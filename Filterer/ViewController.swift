@@ -21,7 +21,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var secondaryMenu: UIView!
     @IBOutlet var bottomMenu: UIView!
-    
+    @IBOutlet var compareButton: UIButton!
     @IBOutlet var filterButton: UIButton!
     
     var originalImage : UIImage!
@@ -31,6 +31,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
         originalImage = imageView.image
+        compareButton.enabled = false
     }
 
     // MARK: Share
@@ -88,6 +89,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func onFilter(sender: UIButton) {
         if (sender.selected) {
             hideSecondaryMenu()
+            compareButton.selected = false
+            compareButton.enabled = false
             sender.selected = false
         } else {
             showSecondaryMenu()
@@ -150,9 +153,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             filterName = "sepia"
         
         default :
-            filterName = "greyscale"
+            filterName = "none"
         }
-        
+        compareButton.enabled = true
         imageView.image = MyImageProcessor().filter(image, filterName: filterName)
     }
     
