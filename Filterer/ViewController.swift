@@ -23,6 +23,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet var bottomMenu: UIView!
     @IBOutlet var compareButton: UIButton!
     @IBOutlet var filterButton: UIButton!
+    @IBOutlet var originalLabel: UILabel!
     
     var originalImage : UIImage!
     
@@ -163,6 +164,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         compareButton.enabled = true
         filteredImage = MyImageProcessor().filter(image, filterName: filterName)
         imageView.image = filteredImage
+        originalLabel.hidden = true
     }
     
     //MARK  compare
@@ -171,10 +173,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         if (sender.selected) {
             imageView.image = filteredImage
+            originalLabel.hidden = true
             sender.selected = false
         } else {
             filteredImage = imageView.image
             imageView.image = self.originalImage
+            originalLabel.hidden = false
             sender.selected = true
             
         }
@@ -185,9 +189,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     {
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
             imageView.image = self.originalImage
+            originalLabel.hidden = false
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.Ended {
             if (self.filteredImage != nil) {
+                originalLabel.hidden = true
                 imageView.image = self.filteredImage
             }
         }
