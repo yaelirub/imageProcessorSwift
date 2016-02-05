@@ -13,7 +13,7 @@ public enum FilterType : Int {
 
 }
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate {
 
     var filteredImage: UIImage?
     
@@ -30,8 +30,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
+        
         originalImage = imageView.image
         compareButton.enabled = false
+        imageView.userInteractionEnabled = true
+        let imageTapRecognizer = UILongPressGestureRecognizer(target: self, action: "handleImageTap:")
+        imageView.addGestureRecognizer(imageTapRecognizer)
+        imageTapRecognizer.delegate = self
     }
 
     // MARK: Share
@@ -156,7 +161,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             filterName = "none"
         }
         compareButton.enabled = true
-        imageView.image = MyImageProcessor().filter(image, filterName: filterName)
+        filteredImage = MyImageProcessor().filter(image, filterName: filterName)
+        imageView.image = filteredImage
     }
     
     //MARK  compare
@@ -172,6 +178,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             sender.selected = true
             
         }
+    }
+    
+    //long press image to show the original image
+    func handleImageTap(gestureRecognizer : UILongPressGestureRecognizer)
+    {
+        if gestureRecognizer.state == UIGestureRecognizerState.Began {
+            imageView.image = self.originalImage
+        }
+        else if gestureRecognizer.state == UIGestureRecognizerState.Ended {
+            if (self.filteredImage != nil) {
+                imageView.image = self.filteredImage
+            }
+        }
+        
     }
 
 }
