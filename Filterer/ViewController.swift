@@ -15,6 +15,9 @@ public enum FilterType : Int {
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate {
     
+    var originalImage : UIImage!
+    var filterName : String!
+    
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var filteredImageView: UIImageView!
     
@@ -29,9 +32,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet var bottomMenu: UIView!
     @IBOutlet var compareButton: UIButton!
     @IBOutlet var filterButton: UIButton!
+    @IBOutlet var editButton: UIButton!
     @IBOutlet var originalLabel: UILabel!
     
-    var originalImage : UIImage!
+    @IBOutlet var intensitySlider: UISlider!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +46,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         originalImage = imageView.image
         compareButton.enabled = false
+        editButton.enabled = false
         imageView.userInteractionEnabled = true
         let imageTapRecognizer = UILongPressGestureRecognizer(target: self, action: "handleImageTap:")
         imageView.addGestureRecognizer(imageTapRecognizer)
@@ -120,42 +127,48 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setFilterButtonsImages()
     {
-        var filteredImage = MyImageProcessor().filter(originalImage, filterName: "greyscale")
+        var filteredImage = MyImageProcessor().filter(originalImage, filterName: "greyscale", intensity: FilterIntensity.Medium)
         greyScaleFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blurry")
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blurry", intensity: FilterIntensity.Medium)
         blurryFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "bright")
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "bright", intensity: FilterIntensity.Medium)
         brightFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "dark")
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "dark", intensity: FilterIntensity.Medium)
         darktFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blue")
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blue", intensity: FilterIntensity.Medium)
         bluetFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "sepia")
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "sepia", intensity: FilterIntensity.Medium)
         sepiatFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
     }
-    func showSecondaryMenu() {
-        view.addSubview(secondaryMenu)
+    
+    func showFilterMenu(optionView:UIView) {
+        self.view.addSubview(optionView)
+        let bottomConstraint = optionView.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
+        let leftConstraint = optionView.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
+        let rightConstraint = optionView.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
         
-        let bottomConstraint = secondaryMenu.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
-        let leftConstraint = secondaryMenu.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
-        let rightConstraint = secondaryMenu.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
-        
-        let heightConstraint = secondaryMenu.heightAnchor.constraintEqualToConstant(44)
+        let heightConstraint = optionView.heightAnchor.constraintEqualToConstant(44)
         
         NSLayoutConstraint.activateConstraints([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
         
-        view.layoutIfNeeded()
+        self.view.layoutIfNeeded()
         
-        self.secondaryMenu.alpha = 0
+        optionView.alpha = 0
         UIView.animateWithDuration(0.4) {
-            self.secondaryMenu.alpha = 1.0
+            optionView.alpha = 1.0
         }
+
+    }
+    func showSecondaryMenu() {
+        self.showFilterMenu(self.secondaryMenu)
+        self.intensitySlider.alpha = 0.0
+
     }
     
     func hideSecondaryMenu() {
@@ -171,7 +184,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func onSelectedFilter(sender:UIButton) {
         
         let image = self.originalImage
-        var filterName : String!
         switch sender.tag {
             
         case FilterType.filterTypeGreyScale.rawValue:
@@ -196,13 +208,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             filterName = "none"
         }
         compareButton.enabled = true
-        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName)
+        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Medium)
         filteredImageView.alpha = 0.0
         UIView.animateWithDuration(0.4, animations: {
             self.filteredImageView.alpha = 1.0
         })
         
         originalLabel.hidden = true
+        editButton.enabled = true
     }
     
     //MARK  compare
@@ -238,5 +251,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
+    //MARK edit intensity
+    
+    @IBAction func onEdit()
+    {
+        self.intensitySlider.value = 0.5
+        self.intensitySlider.translatesAutoresizingMaskIntoConstraints = false
+        self.showFilterMenu(self.intensitySlider)
+        self.secondaryMenu.alpha = 0.0
+        self.filterButton.selected = false
+    }
+    
+    @IBAction func intensityChanged(sender: UISlider)
+    {
+        let image = imageView.image!
+
+        switch sender.value {
+        case 0.1...0.3:
+            filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Weak)
+        case 0.31...0.7:
+            filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Medium)
+        case 0.71...1:
+            filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Strong)
+        default:
+            filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Weak)
+        }
+    }
     
 }

@@ -339,37 +339,38 @@ public struct MyImageProcessor {
         
     }
     
-    public func filter(image:UIImage , filterName:String) -> UIImage {
+    public func filter(image:UIImage , filterName:String , intensity:FilterIntensity) -> UIImage {
         
         var filteredImage : UIImage!
         let filter:Filter!
         if filterName.caseInsensitiveCompare("greyscale") == NSComparisonResult.OrderedSame {
-             filter = GreyScaleFilter(image: image, name: "greyscale" , intensity:FilterIntensity.Medium)
+             filter = GreyScaleFilter(image: image, name: "greyscale" , intensity:intensity)
     
 
         }
         
         else  if filterName.caseInsensitiveCompare("blurry") == NSComparisonResult.OrderedSame {
-            filter = BlurryFilter(image: image, name: "blurry" , intensity:FilterIntensity.Strong)
+            let filter1:Filter = BlurryFilter(image: image, name: "blurry" , intensity:FilterIntensity.Strong)
+            filter = BlurryFilter(image: filter1.applyFilter()!, name: "blurry" , intensity:intensity)
         }
             
         else  if filterName.caseInsensitiveCompare("bright") == NSComparisonResult.OrderedSame {
-            filter = BrightFilter(image: image, name: "bright" , intensity:FilterIntensity.Medium)
+            filter = BrightFilter(image: image, name: "bright" , intensity:intensity)
         }
             
         else  if filterName.caseInsensitiveCompare("dark") == NSComparisonResult.OrderedSame {
-            filter = DarkFilter(image: image, name: "dark" , intensity:FilterIntensity.Medium)
+            filter = DarkFilter(image: image, name: "dark" , intensity:intensity)
         }
         else  if filterName.caseInsensitiveCompare("sepia") == NSComparisonResult.OrderedSame {
-            filter = SepiaFilter(image: image, name: "sepia" , intensity:FilterIntensity.Medium)
+            filter = SepiaFilter(image: image, name: "sepia" , intensity:intensity)
         }
             
         else  if filterName.caseInsensitiveCompare("blue") == NSComparisonResult.OrderedSame {
-            filter = Blue(image: image, name: "blue", intensity:FilterIntensity.Medium)
+            filter = Blue(image: image, name: "blue", intensity:intensity)
             filteredImage = filter.applyFilter()
         }
         else {
-            filter = Filter(image: image, name: "none" , intensity:FilterIntensity.Medium)
+            filter = Filter(image: image, name: "none" , intensity: intensity)
         }
         filteredImage = filter.applyFilter()
         return filteredImage

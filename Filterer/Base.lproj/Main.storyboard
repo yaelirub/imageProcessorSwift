@@ -27,7 +27,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPg-yq-mNp">
-                                                <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="120" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Qiv-OS-HEF"/>
                                                 </constraints>
@@ -37,7 +37,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6B-1F-j0K">
-                                                <rect key="frame" x="150" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="120" y="0.0" width="120" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="9TF-bC-3of"/>
                                                 </constraints>
@@ -46,8 +46,15 @@
                                                     <action selector="onFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bde-Ke-RWf"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ihy-UN-Kug">
+                                                <rect key="frame" x="240" y="0.0" width="120" height="44"/>
+                                                <state key="normal" title="Edit"/>
+                                                <connections>
+                                                    <action selector="onEdit" destination="BYZ-38-t0r" eventType="touchUpInside" id="PnR-yg-sqv"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPg-2N-f93">
-                                                <rect key="frame" x="300" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="360" y="0.0" width="120" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="zgf-3k-aR7"/>
                                                 </constraints>
@@ -57,7 +64,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leg-ry-Zqw">
-                                                <rect key="frame" x="450" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="480" y="0.0" width="120" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="IZl-Nh-MXv"/>
                                                 </constraints>
@@ -127,10 +134,12 @@
                         <outlet property="brightFilterButton" destination="sNq-be-bSy" id="7rO-h8-2iC"/>
                         <outlet property="compareButton" destination="tPg-2N-f93" id="jwb-1r-A2T"/>
                         <outlet property="darktFilterButton" destination="zUq-ef-bpc" id="aCc-7l-HaB"/>
+                        <outlet property="editButton" destination="Ihy-UN-Kug" id="UvT-WH-hE3"/>
                         <outlet property="filterButton" destination="C6B-1F-j0K" id="6Kf-1q-zun"/>
                         <outlet property="filteredImageView" destination="m5K-HS-Zxf" id="LM7-U6-cAu"/>
                         <outlet property="greyScaleFilterButton" destination="Drk-Kp-614" id="r81-O1-Sw9"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
+                        <outlet property="intensitySlider" destination="MHu-Iy-1Oi" id="oir-Cr-ABk"/>
                         <outlet property="originalLabel" destination="FTf-ZI-CSf" id="2yl-gI-U3g"/>
                         <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
                         <outlet property="sepiatFilterButton" destination="7P8-VM-YCw" id="gvT-oC-QyV"/>
@@ -192,6 +201,13 @@
                         <constraint firstItem="n3M-NR-6VP" firstAttribute="leading" secondItem="ePS-oG-ZHP" secondAttribute="leading" id="uEa-cd-VyS"/>
                     </constraints>
                 </view>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="MHu-Iy-1Oi">
+                    <rect key="frame" x="0.0" y="0.0" width="118" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="intensityChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="UIp-5f-mth"/>
+                    </connections>
+                </slider>
             </objects>
             <point key="canvasLocation" x="249" y="408"/>
         </scene>
