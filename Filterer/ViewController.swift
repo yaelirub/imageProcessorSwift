@@ -9,18 +9,23 @@
 import UIKit
 
 public enum FilterType : Int {
-     case filterTypeGreyScale  = 1, filterTypeBlurry , filterTypeBight , filterTypeDark , filterTypeBlue , filterTypeSepia
-
+    case filterTypeGreyScale  = 1, filterTypeBlurry , filterTypeBight , filterTypeDark , filterTypeBlue , filterTypeSepia
+    
 }
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate {
-
-    var filteredImage: UIImage?
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var filteredImageView: UIImageView!
     
     @IBOutlet var secondaryMenu: UIView!
+    @IBOutlet var greyScaleFilterButton: UIButton!
+    @IBOutlet var blurryFilterButton: UIButton!
+    @IBOutlet var brightFilterButton: UIButton!
+    @IBOutlet var darktFilterButton: UIButton!
+    @IBOutlet var bluetFilterButton: UIButton!
+    @IBOutlet var sepiatFilterButton: UIButton!
+    
     @IBOutlet var bottomMenu: UIView!
     @IBOutlet var compareButton: UIButton!
     @IBOutlet var filterButton: UIButton!
@@ -39,8 +44,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imageTapRecognizer = UILongPressGestureRecognizer(target: self, action: "handleImageTap:")
         imageView.addGestureRecognizer(imageTapRecognizer)
         imageTapRecognizer.delegate = self
+        self.setFilterButtonsImages()
     }
-
+    
     // MARK: Share
     @IBAction func onShare(sender: AnyObject) {
         let activityController = UIActivityViewController(activityItems: ["Check out our really cool app", imageView.image!], applicationActivities: nil)
@@ -111,6 +117,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //MARK : Secondery menu
+    
+    func setFilterButtonsImages()
+    {
+        var filteredImage = MyImageProcessor().filter(originalImage, filterName: "greyscale")
+        greyScaleFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blurry")
+        blurryFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "bright")
+        brightFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "dark")
+        darktFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blue")
+        bluetFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+        filteredImage = MyImageProcessor().filter(originalImage, filterName: "sepia")
+        sepiatFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        
+    }
     func showSecondaryMenu() {
         view.addSubview(secondaryMenu)
         
@@ -129,7 +157,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.secondaryMenu.alpha = 1.0
         }
     }
-
+    
     func hideSecondaryMenu() {
         UIView.animateWithDuration(0.4, animations: {
             self.secondaryMenu.alpha = 0
@@ -141,11 +169,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func onSelectedFilter(sender:UIButton) {
-
+        
         let image = self.originalImage
         var filterName : String!
         switch sender.tag {
-
+            
         case FilterType.filterTypeGreyScale.rawValue:
             filterName = "greyscale"
             
@@ -163,38 +191,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
         case FilterType.filterTypeSepia.rawValue:
             filterName = "sepia"
-        
+            
         default :
             filterName = "none"
         }
         compareButton.enabled = true
-        filteredImage = MyImageProcessor().filter(image, filterName: filterName)
-        filteredImageView.image = filteredImage
+        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName)
         filteredImageView.alpha = 0.0
         UIView.animateWithDuration(0.4, animations: {
             self.filteredImageView.alpha = 1.0
         })
-        //imageView.image = filteredImage
+        
         originalLabel.hidden = true
     }
     
     //MARK  compare
     
     @IBAction func onCompare(sender: UIButton) {
-
         if (sender.selected) {
-            filteredImageView.image = filteredImage
             UIView.animateWithDuration(0.4, animations: {
                 self.filteredImageView.alpha = 1.0
             })
             originalLabel.hidden = true
             sender.selected = false
         } else {
-           // filteredImage = imageView.image
             UIView.animateWithDuration(0.4, animations: {
                 self.filteredImageView.alpha = 0.0
             })
-            //imageView.image = self.originalImage
             originalLabel.hidden = false
             sender.selected = true
             
@@ -205,23 +228,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func handleImageTap(gestureRecognizer : UILongPressGestureRecognizer)
     {
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            //UIView.animateWithDuration(0.4, animations: {
-                self.filteredImageView.alpha = 0.0
-            //})
-           // imageView.image = self.originalImage
+            self.filteredImageView.alpha = 0.0
             originalLabel.hidden = false
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.Ended {
-            if (self.filteredImage != nil) {
-                //UIView.animateWithDuration(0.4, animations: {
-                    self.filteredImageView.alpha = 1.0
-                //})
+                self.filteredImageView.alpha = 1.0
                 originalLabel.hidden = true
-                //imageView.image = self.filteredImage
-            }
         }
         
     }
     
-
+    
 }

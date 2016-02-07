@@ -121,13 +121,19 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="bluetFilterButton" destination="oKK-63-sgp" id="MTT-xi-fIx"/>
+                        <outlet property="blurryFilterButton" destination="axt-GK-a6m" id="eta-g0-T6u"/>
                         <outlet property="bottomMenu" destination="JNF-wb-wwY" id="jTm-2q-PDu"/>
+                        <outlet property="brightFilterButton" destination="sNq-be-bSy" id="7rO-h8-2iC"/>
                         <outlet property="compareButton" destination="tPg-2N-f93" id="jwb-1r-A2T"/>
+                        <outlet property="darktFilterButton" destination="zUq-ef-bpc" id="aCc-7l-HaB"/>
                         <outlet property="filterButton" destination="C6B-1F-j0K" id="6Kf-1q-zun"/>
                         <outlet property="filteredImageView" destination="m5K-HS-Zxf" id="LM7-U6-cAu"/>
+                        <outlet property="greyScaleFilterButton" destination="Drk-Kp-614" id="r81-O1-Sw9"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="originalLabel" destination="FTf-ZI-CSf" id="2yl-gI-U3g"/>
                         <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
+                        <outlet property="sepiatFilterButton" destination="7P8-VM-YCw" id="gvT-oC-QyV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -135,47 +141,42 @@
                     <rect key="frame" x="0.0" y="0.0" width="500" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n3M-NR-6VP">
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n3M-NR-6VP">
                             <rect key="frame" x="0.0" y="0.0" width="500" height="128"/>
                             <subviews>
                                 <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Drk-Kp-614">
-                                    <rect key="frame" x="0.0" y="49" width="74" height="30"/>
-                                    <state key="normal" title="Grey Scale"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="84" height="128"/>
+                                    <state key="normal" backgroundImage=" "/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OQ9-Ab-eyR"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axt-GK-a6m">
-                                    <rect key="frame" x="122" y="49" width="41" height="30"/>
-                                    <state key="normal" title="Blurry"/>
+                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="axt-GK-a6m">
+                                    <rect key="frame" x="84" y="49" width="83" height="30"/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UdF-Ca-Ini"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNq-be-bSy">
-                                    <rect key="frame" x="211" y="49" width="42" height="30"/>
-                                    <state key="normal" title="Bright"/>
+                                    <rect key="frame" x="167" y="49" width="84" height="30"/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4ut-h8-ksX"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUq-ef-bpc">
-                                    <rect key="frame" x="301" y="49" width="33" height="30"/>
-                                    <state key="normal" title="Dark"/>
+                                    <rect key="frame" x="250" y="49" width="84" height="30"/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m1K-dH-3XG"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oKK-63-sgp">
-                                    <rect key="frame" x="382" y="49" width="31" height="30"/>
-                                    <state key="normal" title="Blue"/>
+                                    <rect key="frame" x="334" y="49" width="83" height="30"/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dmP-33-ljs"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7P8-VM-YCw">
-                                    <rect key="frame" x="461" y="49" width="39" height="30"/>
-                                    <state key="normal" title="Sepia"/>
+                                    <rect key="frame" x="417" y="49" width="84" height="30"/>
                                     <connections>
                                         <action selector="onSelectedFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fKv-zu-5sv"/>
                                     </connections>
@@ -196,6 +197,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name=" " width="593" height="403"/>
         <image name="face_PNG5667.png" width="593" height="403"/>
     </resources>
 </document>
