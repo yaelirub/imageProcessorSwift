@@ -18,6 +18,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var filteredImage: UIImage?
     
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var filteredImageView: UIImageView!
     
     @IBOutlet var secondaryMenu: UIView!
     @IBOutlet var bottomMenu: UIView!
@@ -98,6 +99,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             compareButton.selected = false
             compareButton.enabled = false
             sender.selected = false
+            imageView.image = originalImage
+            UIView.animateWithDuration(0.4, animations:{
+                self.filteredImageView.alpha = 0
+            })
+            
         } else {
             showSecondaryMenu()
             sender.selected = true
@@ -163,7 +169,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         compareButton.enabled = true
         filteredImage = MyImageProcessor().filter(image, filterName: filterName)
-        imageView.image = filteredImage
+        filteredImageView.image = filteredImage
+        filteredImageView.alpha = 0.0
+        UIView.animateWithDuration(0.4, animations: {
+            self.filteredImageView.alpha = 1.0
+        })
+        //imageView.image = filteredImage
         originalLabel.hidden = true
     }
     
@@ -172,12 +183,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func onCompare(sender: UIButton) {
 
         if (sender.selected) {
-            imageView.image = filteredImage
+            filteredImageView.image = filteredImage
+            UIView.animateWithDuration(0.4, animations: {
+                self.filteredImageView.alpha = 1.0
+            })
             originalLabel.hidden = true
             sender.selected = false
         } else {
-            filteredImage = imageView.image
-            imageView.image = self.originalImage
+           // filteredImage = imageView.image
+            UIView.animateWithDuration(0.4, animations: {
+                self.filteredImageView.alpha = 0.0
+            })
+            //imageView.image = self.originalImage
             originalLabel.hidden = false
             sender.selected = true
             
@@ -188,16 +205,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func handleImageTap(gestureRecognizer : UILongPressGestureRecognizer)
     {
         if gestureRecognizer.state == UIGestureRecognizerState.Began {
-            imageView.image = self.originalImage
+            //UIView.animateWithDuration(0.4, animations: {
+                self.filteredImageView.alpha = 0.0
+            //})
+           // imageView.image = self.originalImage
             originalLabel.hidden = false
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.Ended {
             if (self.filteredImage != nil) {
+                //UIView.animateWithDuration(0.4, animations: {
+                    self.filteredImageView.alpha = 1.0
+                //})
                 originalLabel.hidden = true
-                imageView.image = self.filteredImage
+                //imageView.image = self.filteredImage
             }
         }
         
     }
+    
 
 }
