@@ -137,6 +137,7 @@
                         <outlet property="editButton" destination="Ihy-UN-Kug" id="UvT-WH-hE3"/>
                         <outlet property="filterButton" destination="C6B-1F-j0K" id="6Kf-1q-zun"/>
                         <outlet property="filteredImageView" destination="m5K-HS-Zxf" id="LM7-U6-cAu"/>
+                        <outlet property="filtersCollectionView" destination="F5l-Tp-gR3" id="L8J-DB-AWB"/>
                         <outlet property="greyScaleFilterButton" destination="Drk-Kp-614" id="r81-O1-Sw9"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="intensitySlider" destination="MHu-Iy-1Oi" id="oir-Cr-ABk"/>
@@ -208,6 +209,41 @@
                         <action selector="intensityChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="UIp-5f-mth"/>
                     </connections>
                 </slider>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="F5l-Tp-gR3">
+                    <rect key="frame" x="0.0" y="0.0" width="500" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5cu-im-hun">
+                        <size key="itemSize" width="84" height="44"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <cells>
+                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gjM-SA-OUi" customClass="MyCollectionViewCell" customModule="Filterer" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HR2-HZ-7Qy">
+                                        <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <constraints>
+                                <constraint firstItem="HR2-HZ-7Qy" firstAttribute="leading" secondItem="gjM-SA-OUi" secondAttribute="leading" id="M3q-df-gmH"/>
+                                <constraint firstItem="HR2-HZ-7Qy" firstAttribute="top" secondItem="gjM-SA-OUi" secondAttribute="top" id="WrU-bq-Efo"/>
+                                <constraint firstAttribute="bottom" secondItem="HR2-HZ-7Qy" secondAttribute="bottom" id="gbC-Q7-JiG"/>
+                                <constraint firstAttribute="trailing" secondItem="HR2-HZ-7Qy" secondAttribute="trailing" id="zay-YQ-306"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="imageView" destination="HR2-HZ-7Qy" id="4RD-Tc-Pe5"/>
+                            </connections>
+                        </collectionViewCell>
+                    </cells>
+                </collectionView>
             </objects>
             <point key="canvasLocation" x="249" y="408"/>
         </scene>

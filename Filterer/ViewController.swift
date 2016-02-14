@@ -9,11 +9,11 @@
 import UIKit
 
 public enum FilterType : Int {
-    case filterTypeGreyScale  = 1, filterTypeBlurry , filterTypeBight , filterTypeDark , filterTypeBlue , filterTypeSepia
+    case filterTypeGreyScale  = 0, filterTypeBlurry , filterTypeBight , filterTypeDark , filterTypeBlue , filterTypeSepia
     
 }
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var originalImage : UIImage!
     var filterName : String!
@@ -37,12 +37,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var intensitySlider: UISlider!
     
+    @IBOutlet var filtersCollectionView: UICollectionView!
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.configureCollectionView()
         
         originalImage = imageView.image
         compareButton.enabled = false
@@ -51,9 +55,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imageTapRecognizer = UILongPressGestureRecognizer(target: self, action: "handleImageTap:")
         imageView.addGestureRecognizer(imageTapRecognizer)
         imageTapRecognizer.delegate = self
-        self.setFilterButtonsImages()
+        //self.setFilterButtonsImages()
     }
     
+    //MARK configure collection view
+    func configureCollectionView()
+    {
+        filtersCollectionView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        filtersCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        filtersCollectionView.registerClass(MyCollectionViewCell.self, forCellWithReuseIdentifier: "cellIdentifier")
+        filtersCollectionView.delegate = self
+        filtersCollectionView.dataSource = self
+        
+    }
     // MARK: Share
     @IBAction func onShare(sender: AnyObject) {
         let activityController = UIActivityViewController(activityItems: ["Check out our really cool app", imageView.image!], applicationActivities: nil)
@@ -108,7 +122,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: Filter Menu
     @IBAction func onFilter(sender: UIButton) {
         if (sender.selected) {
-            hideSecondaryMenu()
+            //hideSecondaryMenu()
+            hideFiltersCollectionView()
             compareButton.selected = false
             compareButton.enabled = false
             sender.selected = false
@@ -118,32 +133,52 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             })
             
         } else {
-            showSecondaryMenu()
+            //showSecondaryMenu()
+            showFiltersCollectionView()
             sender.selected = true
         }
     }
     
     //MARK : Secondery menu
     
-    func setFilterButtonsImages()
+    func filterName(filterType: FilterType.RawValue) -> String
     {
-        var filteredImage = MyImageProcessor().filter(originalImage, filterName: "greyscale", intensity: FilterIntensity.Medium)
-        greyScaleFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        switch(filterType) {
+        case FilterType.filterTypeGreyScale.rawValue:
+            filterName = "greyscale"
+            
+        case FilterType.filterTypeBlurry.rawValue :
+            filterName = "blurry"
+            
+        case FilterType.filterTypeBight.rawValue:
+            filterName = "bright"
+            
+        case FilterType.filterTypeDark.rawValue:
+            filterName = "dark"
+            
+        case FilterType.filterTypeBlue.rawValue:
+            filterName = "blue"
+            
+        case FilterType.filterTypeSepia.rawValue:
+            filterName = "sepia"
+            
+        default :
+            filterName = "none"
+        }
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blurry", intensity: FilterIntensity.Medium)
-        blurryFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        return filterName
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "bright", intensity: FilterIntensity.Medium)
-        brightFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+    }
+    
+    func setFilterImages(cell: MyCollectionViewCell, index:Int)
+    {
+        let filterNameForCell = self.filterName(index)
+        let filteredImage = MyImageProcessor().filter(originalImage, filterName: filterNameForCell, intensity: FilterIntensity.Medium)
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "dark", intensity: FilterIntensity.Medium)
-        darktFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
+        cell.imageView.image = filteredImage
+        cell.imageView.tag = 250
+        cell.imageView.contentMode = UIViewContentMode.ScaleAspectFit
         
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "blue", intensity: FilterIntensity.Medium)
-        bluetFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
-        
-        filteredImage = MyImageProcessor().filter(originalImage, filterName: "sepia", intensity: FilterIntensity.Medium)
-        sepiatFilterButton.setBackgroundImage(filteredImage, forState: (UIControlState.Normal))
         
     }
     
@@ -181,34 +216,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    func showFiltersCollectionView() {
+        self.showFilterMenu(self.filtersCollectionView)
+        self.intensitySlider.alpha = 0.0
+        
+    }
+    
+    func hideFiltersCollectionView() {
+        UIView.animateWithDuration(0.4, animations: {
+            self.filtersCollectionView.alpha = 0.0;
+            }) { completed in
+                if completed == true {
+                    self.filtersCollectionView.removeFromSuperview()
+                }
+        }
+    }
+    
     @IBAction func onSelectedFilter(sender:UIButton) {
         
         let image = self.originalImage
-        switch sender.tag {
-            
-        case FilterType.filterTypeGreyScale.rawValue:
-            filterName = "greyscale"
-            
-        case FilterType.filterTypeBlurry.rawValue :
-            filterName = "blurry"
-            
-        case FilterType.filterTypeBight.rawValue:
-            filterName = "bright"
-            
-        case FilterType.filterTypeDark.rawValue:
-            filterName = "dark"
-            
-        case FilterType.filterTypeBlue.rawValue:
-            filterName = "blue"
-            
-        case FilterType.filterTypeSepia.rawValue:
-            filterName = "sepia"
-            
-        default :
-            filterName = "none"
-        }
+        let filterNameForCell = self.filterName(sender.tag)
         compareButton.enabled = true
-        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Medium)
+        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterNameForCell , intensity: FilterIntensity.Medium)
         filteredImageView.alpha = 0.0
         UIView.animateWithDuration(0.4, animations: {
             self.filteredImageView.alpha = 1.0
@@ -276,6 +305,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         default:
             filteredImageView.image = MyImageProcessor().filter(image, filterName: filterName , intensity: FilterIntensity.Weak)
         }
+    }
+    
+    //MARK collectionView delegate and data source
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+       
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellIdentifier", forIndexPath: indexPath) as! MyCollectionViewCell
+        self.setFilterImages(cell,index: indexPath.row)
+        return cell
+        
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
     }
     
 }
