@@ -4,7 +4,12 @@
 //
 //  Created by Jack on 2015-09-22.
 //  Copyright © 2015 UofT. All rights reserved.
-//
+
+
+/*
+includes Part 3 Optional Bonus Challenge – UICollectionView.
+The filters menu is now a collection view with fixed data source number of 6.
+*/
 
 import UIKit
 
@@ -21,7 +26,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var filteredImageView: UIImageView!
     
-    @IBOutlet var secondaryMenu: UIView!
+   // @IBOutlet var secondaryMenu: UIView!
     @IBOutlet var greyScaleFilterButton: UIButton!
     @IBOutlet var blurryFilterButton: UIButton!
     @IBOutlet var brightFilterButton: UIButton!
@@ -43,8 +48,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
+       // secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        //secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
         
         self.configureCollectionView()
         
@@ -200,21 +205,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
 
     }
-    func showSecondaryMenu() {
-        self.showFilterMenu(self.secondaryMenu)
-        self.intensitySlider.alpha = 0.0
-
-    }
-    
-    func hideSecondaryMenu() {
-        UIView.animateWithDuration(0.4, animations: {
-            self.secondaryMenu.alpha = 0
-            }) { completed in
-                if completed == true {
-                    self.secondaryMenu.removeFromSuperview()
-                }
-        }
-    }
+//    func showSecondaryMenu() {
+//        self.showFilterMenu(self.secondaryMenu)
+//        self.intensitySlider.alpha = 0.0
+//
+//    }
+//    
+//    func hideSecondaryMenu() {
+//        UIView.animateWithDuration(0.4, animations: {
+//            self.secondaryMenu.alpha = 0
+//            }) { completed in
+//                if completed == true {
+//                    self.secondaryMenu.removeFromSuperview()
+//                }
+//        }
+//    }
     
     func showFiltersCollectionView() {
         self.showFilterMenu(self.filtersCollectionView)
@@ -232,17 +237,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    @IBAction func onSelectedFilter(sender:UIButton) {
+     func onSelectedFilter(sender:MyCollectionViewCell) {
         
         let image = self.originalImage
-        let filterNameForCell = self.filterName(sender.tag)
         compareButton.enabled = true
-        filteredImageView.image = MyImageProcessor().filter(image, filterName: filterNameForCell , intensity: FilterIntensity.Medium)
+        filteredImageView.image = MyImageProcessor().filter(image, filterName: sender.filterName , intensity: FilterIntensity.Medium)
         filteredImageView.alpha = 0.0
         UIView.animateWithDuration(0.4, animations: {
             self.filteredImageView.alpha = 1.0
         })
-        
+        self.filterName = sender.filterName
         originalLabel.hidden = true
         editButton.enabled = true
     }
@@ -287,7 +291,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.intensitySlider.value = 0.5
         self.intensitySlider.translatesAutoresizingMaskIntoConstraints = false
         self.showFilterMenu(self.intensitySlider)
-        self.secondaryMenu.alpha = 0.0
+        self.filtersCollectionView.alpha = 0.0
         self.filterButton.selected = false
     }
     
@@ -312,6 +316,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellIdentifier", forIndexPath: indexPath) as! MyCollectionViewCell
         self.setFilterImages(cell,index: indexPath.row)
+        cell.filterName = self.filterName(indexPath.row)
         return cell
         
     }
@@ -321,6 +326,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! MyCollectionViewCell
+         self.onSelectedFilter(cell)
         
     }
     

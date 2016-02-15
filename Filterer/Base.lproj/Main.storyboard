@@ -142,7 +142,6 @@
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="intensitySlider" destination="MHu-Iy-1Oi" id="oir-Cr-ABk"/>
                         <outlet property="originalLabel" destination="FTf-ZI-CSf" id="2yl-gI-U3g"/>
-                        <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
                         <outlet property="sepiatFilterButton" destination="7P8-VM-YCw" id="gvT-oC-QyV"/>
                     </connections>
                 </viewController>
@@ -218,31 +217,7 @@
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
-                    <cells>
-                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gjM-SA-OUi" customClass="MyCollectionViewCell" customModule="Filterer" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HR2-HZ-7Qy">
-                                        <rect key="frame" x="0.0" y="0.0" width="84" height="44"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <constraints>
-                                <constraint firstItem="HR2-HZ-7Qy" firstAttribute="leading" secondItem="gjM-SA-OUi" secondAttribute="leading" id="M3q-df-gmH"/>
-                                <constraint firstItem="HR2-HZ-7Qy" firstAttribute="top" secondItem="gjM-SA-OUi" secondAttribute="top" id="WrU-bq-Efo"/>
-                                <constraint firstAttribute="bottom" secondItem="HR2-HZ-7Qy" secondAttribute="bottom" id="gbC-Q7-JiG"/>
-                                <constraint firstAttribute="trailing" secondItem="HR2-HZ-7Qy" secondAttribute="trailing" id="zay-YQ-306"/>
-                            </constraints>
-                            <connections>
-                                <outlet property="imageView" destination="HR2-HZ-7Qy" id="4RD-Tc-Pe5"/>
-                            </connections>
-                        </collectionViewCell>
-                    </cells>
+                    <cells/>
                 </collectionView>
             </objects>
             <point key="canvasLocation" x="249" y="408"/>

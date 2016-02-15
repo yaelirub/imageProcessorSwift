@@ -12,6 +12,7 @@ import UIKit
 public class MyCollectionViewCell:UICollectionViewCell {
     
     @IBOutlet var imageView: UIImageView!
+    var filterName:String!
 
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
